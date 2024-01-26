@@ -1,4 +1,3 @@
-#直接放在src/experiments下
 import time
 import json
 import argparse
@@ -39,7 +38,7 @@ def main():
 	rospy.Subscriber("/Target", String, targetcallback)
 	my_quad.set_state(quad_current_state)
 
-	#设置初始输入，实际上没有参考u
+	#设置初始输入，实际上没有参考u，直接设为0？
 	ref_u = reference_u[0, :]
 
 	#创建Nx状态数量矩阵，用来存储UAV在每个时间戳的预测状态
@@ -73,6 +72,9 @@ def main():
         mean_opt_time += time.time() - t_opt_init
 
         ref_u = np.squeeze(np.array(w_opt[:4]))
+
+        #更新simulator参数（实机不需要）
+        #quad_current_state = my_quad.get_state(quaternion=True, stacked=True)
 
 
 		#输入参考路径，ReferenceTrajectory指我们自定义的数据类型
